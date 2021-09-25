@@ -1,0 +1,10 @@
+<!-- Displaying post macro -->
+{% macro displayBlogPost(blogpost_list) %}
+    {% for post in blogpost_list %}
+    <div class="">
+        <h1> {{ post.title}} </h1>
+        <p> {{ post.content }}</p>
+        <h3>By: {{ post.author }}</h3>
+    </div>
+    {% endfor %}
+{% endmacro %}

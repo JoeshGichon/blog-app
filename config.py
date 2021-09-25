@@ -9,6 +9,7 @@ class ProdConfig(Config):
 
 class DevConfig(Config):
     DEBUG = True
+    SECRET_KEY = 'gradwftformsecret'
 
 config_options = {
 'development':DevConfig,

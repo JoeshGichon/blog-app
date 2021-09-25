@@ -1,0 +1,21 @@
+{% extends 'base.html'%}
+{% import 'macros.html' as macro%}
+{% import "bootstrap/wtf.html" as wtf %}
+
+{% block content %}
+
+    <div class="container">
+        <div class="col-lg-5">
+            <h1>Blog Posts</h1>
+            <hr>
+            {% if post %}
+                {{macro.displayBlogPost(post)}}
+            {% else%}
+                <h3 class="text-center">No Blog Posts at the momment
+            {% endif %}
+        </div>
+        <div class="col-lg-5">
+            {{ wtf.quick_form(BlogPostForm) }}
+        </div>
+    </div>
+{% endblock %}
