@@ -1,0 +1,3 @@
+Hello {{user.username}}
+Welcome to Joesh_Gichon Blog Site
+We have just seen you have signed up for our application and want to welcome you to the family. Please enjoy the best, educative and most informative blog posts.
