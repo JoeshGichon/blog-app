@@ -1,7 +1,7 @@
-from flask import render_template,request,redirect
+from flask import render_template,request,redirect,abort
 from flask.helpers import url_for
 from . import main
-from ..models import BlogPost
+from ..models import BlogPost,User
 from .forms import BlogPostsForm
 from flask_login import login_required
 
@@ -25,6 +25,13 @@ def new_posts():
     title="post"
     post = BlogPost.get_posts()
     return render_template("new_blogpost.html",title=title,BlogPostForm=form,post = post)
+
+@main.route('/user/<uname>')
+def profile(uname):
+    user = User.query.filter_by(username = uname).first()
+    if user is None:
+        abort(404)
+    return render_template("profile/profile.html", user = user)
 
 
 
