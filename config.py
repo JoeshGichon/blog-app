@@ -1,7 +1,7 @@
 import os
 
 class Config:
-    pass
+    SQLALCHEMY_DATABASE_URI = 'postgresql+psycopg2://moringa:access@localhost/blog'
 
 class ProdConfig(Config):
     pass
@@ -10,6 +10,7 @@ class ProdConfig(Config):
 class DevConfig(Config):
     DEBUG = True
     SECRET_KEY = 'gradwftformsecret'
+    SQLALCHEMY_DATABASE_URI = 'postgresql+psycopg2://moringa:access@localhost/blog'
 
 config_options = {
 'development':DevConfig,
