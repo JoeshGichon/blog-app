@@ -3,6 +3,7 @@ from flask.helpers import url_for
 from . import main
 from ..models import BlogPost
 from .forms import BlogPostsForm
+from flask_login import login_required
 
 @main.route('/')
 def index():
@@ -10,6 +11,7 @@ def index():
     return render_template("index.html",title=title)
 
 @main.route("/posts/new", methods = ["GET","POST"])
+@login_required
 def new_posts():
     form = BlogPostsForm()
     if form.validate_on_submit():
