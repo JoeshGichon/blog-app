@@ -1,8 +1,8 @@
 from flask import render_template,request,redirect,abort
 from flask.helpers import url_for
 from . import main
-from ..models import BlogPost,User
-from .forms import BlogPostsForm,UpdateProfile
+from ..models import BlogPost,User,Comments
+from .forms import BlogPostsForm,UpdateProfile,CommentForm
 from .. import db,photos
 from flask_login import login_required
 from flask_login import login_required, current_user
@@ -24,6 +24,23 @@ def new_posts():
     title="post"
     post = BlogPost.get_blogposts()
     return render_template("new_blogpost.html",title=title,BlogPostForm=form,post = post)
+
+@main.route('/comments/<int:id>',methods = ['GET','POST'])
+# 
+def new_comment(id): 
+    form = CommentForm()
+    blogposts = BlogPost.query.filter_by(id = id).first()
+    if blogposts is None: 
+        abort(404) 
+    print(blogposts)
+    if form.validate_on_submit(): 
+        new_comment = Comments(comment = form.comment.data,user=current_user,blogpost_id = id)
+        new_comment.save_comment()
+
+    comments_available = Comments.get_comments(id)
+    title = 'comments'
+    return render_template('comments.html', title = title, comments_form = form, blog = blogposts,comments_available = comments_available)
+
 
 @main.route('/user/<uname>')
 def profile(uname):
@@ -61,6 +78,7 @@ def update_pic(uname):
         user.profile_pic_path = path
         db.session.commit()
     return redirect(url_for('main.profile',uname=uname))
+
 
 
 

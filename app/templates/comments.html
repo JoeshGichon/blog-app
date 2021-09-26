@@ -1,0 +1,21 @@
+{% extends 'base.html'%}
+{% import "bootstrap/wtf.html" as wtf %}
+
+{% block content %}
+    <div class="container">
+        <div class="col-lg-5">
+            <h1>Comments</h1>
+            <hr>
+            {%for comments in comments_available%}
+            <ul class="d-flex">
+              <li style="list-style: none;">{{ comments.comment }}</li>
+            </ul>
+          {%endfor%}
+        </div>
+        <div class="col-md-4">
+            {{ wtf.quick_form(comments_form) }}
+        </div>
+
+    </div>
+
+{% endblock %}
