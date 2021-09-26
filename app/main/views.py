@@ -5,6 +5,7 @@ from ..models import BlogPost,User
 from .forms import BlogPostsForm,UpdateProfile
 from .. import db,photos
 from flask_login import login_required
+from flask_login import login_required, current_user
 
 @main.route('/')
 def index():
@@ -16,15 +17,12 @@ def index():
 def new_posts():
     form = BlogPostsForm()
     if form.validate_on_submit():
-        post_title = form.title.data
-        post_content = form.blog_post.data
-        post_author = form.author.data
-        new_post = BlogPost(title=post_title,content=post_content,author=post_author)
-        new_post.save_post()
+        new_blogpost = BlogPost(title = form.title.data,content = form.blog_post.data,author=form.author.data,user = current_user)
+        new_blogpost.save_blogposts()
         return redirect(url_for("main.new_posts"))
 
     title="post"
-    post = BlogPost.get_posts()
+    post = BlogPost.get_blogposts()
     return render_template("new_blogpost.html",title=title,BlogPostForm=form,post = post)
 
 @main.route('/user/<uname>')

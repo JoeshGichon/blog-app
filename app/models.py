@@ -2,6 +2,8 @@ from . import db
 from werkzeug.security import generate_password_hash,check_password_hash
 from flask_login import UserMixin
 from . import login_manager
+from datetime import datetime
+from sqlalchemy.orm import backref
 
 @login_manager.user_loader
 def load_user(user_id):
@@ -15,6 +17,8 @@ class User(UserMixin,db.Model):
     bio = db.Column(db.String(255))
     profile_pic_path = db.Column(db.String())
     pass_secure = db.Column(db.String(255))
+
+    blogpost = db.relationship('BlogPost',backref = 'user',lazy = "dynamic")
 
     @property
     def password(self):
@@ -32,26 +36,24 @@ class User(UserMixin,db.Model):
     def __repr__(self):
         return f'User {self.username}'
 
-class BlogPost:
+class BlogPost(db.Model):
+    __tablename__ = 'blogpost'
+    id = db.Column(db.Integer,primary_key = True)
+    title = db.Column(db.String)
+    content = db.Column(db.String)
+    author = db.Column(db.String)
+    posted = db.Column(db.DateTime,default=datetime.utcnow)
 
-    all_posts = []
+    user_id = db.Column(db.Integer,db.ForeignKey("users.id"))
 
-    def __init__(self,title,content,author):
-        self.title = title
-        self.content = content
-        self.author = author
-
-    def save_post(self):
-        BlogPost.all_posts.append(self)
-
-    @classmethod
-    def clear_post(cls):
-        BlogPost.all_posts.clear()
+    def save_blogposts(self):
+        db.session.add(self)
+        db.session.commit()
 
     @classmethod
-    def get_posts(cls):
-        response = []
-        for post in cls.all_posts:
-            response.append(post)
-        return response
+    def get_blogposts(cls):
+        blogpost = BlogPost.query.all()
+        return blogpost
 
+    def __repr__(self): 
+        return f'BlogPost {self.id} > {self.content}'
