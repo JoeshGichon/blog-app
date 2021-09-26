@@ -39,7 +39,18 @@ def new_comment(id):
 
     comments_available = Comments.get_comments(id)
     title = 'comments'
-    return render_template('comments.html', title = title, comments_form = form, blog = blogposts,comments_available = comments_available)
+    return render_template('comments.html', title = title, comments_form = form, blogposts = blogposts,comments_available = comments_available)
+
+@main.route('/deletecomment/<int:id>',methods = ['GET','DELETE'])
+@login_required
+def delete_comment(id):
+    comment = Comments.query.filter_by(id = id).first()
+    if comment: 
+        db.session.delete(comment)
+        db.session.commit()
+    else: 
+        abort(404)
+    return redirect(url_for('/comments', id = comment.blogpost_id))
 
 
 @main.route('/user/<uname>')

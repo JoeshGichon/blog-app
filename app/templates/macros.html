@@ -5,6 +5,9 @@
         <h1> {{ post.title}} </h1>
         <p> {{ post.content }}</p>
         <h3>By: {{ post.author }}</h3>
+        <button class="btn btn-info">
+            <a href="/comments/1">View Comments</a>
+        </button>
     </div>
     {% endfor %}
 {% endmacro %}
