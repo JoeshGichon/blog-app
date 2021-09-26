@@ -1,7 +1,7 @@
 from flask import render_template,request,redirect,abort
 from flask.helpers import url_for
 from . import main
-from ..models import BlogPost,User,Comments
+from ..models import User,BlogPost,Comments
 from .forms import BlogPostsForm,UpdateProfile,CommentForm
 from .. import db,photos
 from flask_login import login_required
@@ -24,6 +24,17 @@ def new_posts():
     title="post"
     post = BlogPost.get_blogposts()
     return render_template("new_blogpost.html",title=title,BlogPostForm=form,post = post)
+
+@main.route('/deleteblogpost/<int:id>',methods = ['GET','DELETE'])
+@login_required
+def delete_blogpost(id): 
+  blogpost = BlogPost.query.filter_by(id = id).first()
+  if blogpost: 
+    db.session.delete(blogpost)
+    db.session.commit()
+  else: 
+    abort(404)
+  return redirect(url_for('.new_blogpost'))
 
 @main.route('/comments/<int:id>',methods = ['GET','POST'])
 # 
