@@ -19,6 +19,7 @@ class User(UserMixin,db.Model):
     pass_secure = db.Column(db.String(255))
 
     blogpost = db.relationship('BlogPost',backref = 'user',lazy = "dynamic")
+    comments = db.relationship('Comments',backref = 'user', lazy = "dynamic")
 
     @property
     def password(self):
@@ -45,6 +46,7 @@ class BlogPost(db.Model):
     posted = db.Column(db.DateTime,default=datetime.utcnow)
 
     user_id = db.Column(db.Integer,db.ForeignKey("users.id"))
+    comments = db.relationship('Comments',backref = 'user', lazy = "dynamic")
 
     def save_blogposts(self):
         db.session.add(self)
@@ -57,3 +59,29 @@ class BlogPost(db.Model):
 
     def __repr__(self): 
         return f'BlogPost {self.id} > {self.content}'
+
+class Comments(db.Model):
+    __tablename__ = 'comments'
+
+    id = db.Column(db.Integer,primary_key = True)
+    comment = db.Column(db.String)
+    author = db.Column(db.String)
+    posted = db.Column(db.DateTime,default=datetime.utcnow)
+
+
+    user_id = db.Column(db.Integer,db.ForeignKey('users.id'))
+    blogpost_id = db.Column(db.Integer,db.ForeignKey('blogpost.id'))
+
+    def save_comment(self):
+        db.session.add(self)
+        db.session.commit()
+
+    @classmethod
+    def get_comments(cls,id):
+        comments = Comments.query.filter_by(blogpost_id = id).all()
+        return comments
+  
+    def __repr__(self): 
+        return f'Comment {self.blogpost_id} > {self.comment}'
+
+
