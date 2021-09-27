@@ -8,4 +8,13 @@
             Welcome To Joesh_Gichon Blog Website At: <a href="/posts/new">View Post</a>
         </p>
     </div>
+    <div class="container">
+        <h2>Quote of the day</h2>
+        <p>
+            <blockquote>
+                {{ display_quotes.quote }}
+            </blockquote>
+        </p>
+        <h3>By: {{display_quotes.author}}</h3>
+    </div>
 {% endblock%}

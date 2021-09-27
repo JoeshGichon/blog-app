@@ -6,11 +6,13 @@ from .forms import BlogPostsForm,UpdateProfile,CommentForm
 from .. import db,photos
 from flask_login import login_required
 from flask_login import login_required, current_user
+from ..requests import quotes
 
 @main.route('/')
 def index():
+    display_quotes = quotes()
     title="Home"
-    return render_template("index.html",title=title)
+    return render_template("index.html",title=title,display_quotes=display_quotes)
 
 @main.route("/posts/new", methods = ["GET","POST"])
 @login_required

@@ -84,4 +84,8 @@ class Comments(db.Model):
     def __repr__(self): 
         return f'Comment {self.blogpost_id} > {self.comment}'
 
+class Quotes:
+  def __init__(self,author,quote):
+    self.author = author
+    self.quote = quote
 
